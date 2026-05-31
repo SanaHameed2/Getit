@@ -41,11 +41,23 @@ function ProductCard({ product }) {
       {/* Image */}
       <Link to={`/product/${product.id}`} className="block relative overflow-hidden">
         <div className="aspect-square overflow-hidden bg-gray-50">
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          />
+          <picture>
+            <source 
+              srcSet={`${product.image}&fm=webp`}
+              type="image/webp"
+            />
+            <source 
+              srcSet={`${product.image}`}
+              type="image/jpeg"
+            />
+            <img
+              src={product.image}
+              alt={product.name}
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+          </picture>
         </div>
         {product.badge && (
           <span className={`absolute top-3 left-3 text-xs font-semibold px-2.5 py-1 rounded-full ${BADGE_COLORS[product.badge] || 'bg-gray-100 text-gray-800'}`}>

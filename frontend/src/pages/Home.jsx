@@ -76,11 +76,23 @@ function HomePage() {
           <div className="flex-1 flex justify-center">
             <div className="relative">
               <div className="w-72 h-72 md:w-80 md:h-80 rounded-3xl overflow-hidden shadow-2xl">
-                <img
-                  src={featuredProduct.image}
-                  alt={featuredProduct.name}
-                  className="w-full h-full object-cover"
-                />
+                <picture>
+                  <source 
+                    srcSet={`${featuredProduct.image}&fm=webp`}
+                    type="image/webp"
+                  />
+                  <source 
+                    srcSet={`${featuredProduct.image}`}
+                    type="image/jpeg"
+                  />
+                  <img
+                    src={featuredProduct.image}
+                    alt={featuredProduct.name}
+                    fetchpriority="high"
+                    decoding="async"
+                    className="w-full h-full object-cover"
+                  />
+                </picture>
               </div>
               <div className="absolute -bottom-4 -right-4 bg-white text-gray-900 rounded-2xl p-4 shadow-xl">
                 <p className="text-xs text-gray-500">Today's Pick</p>
@@ -198,7 +210,7 @@ function HomePage() {
       <section className="bg-indigo-600 text-white">
         <div className="max-w-2xl mx-auto px-4 py-16 text-center">
           <h2 className="text-2xl md:text-3xl font-bold mb-3">Stay in the Know</h2>
-          <p className="text-indigo-200 mb-8">
+          <p className="text-indigo-100 mb-8">
             Get the latest deals, new arrivals, and exclusive offers delivered to your inbox.
           </p>
           <form onSubmit={(e) => e.preventDefault()} className="flex gap-2 max-w-md mx-auto">
