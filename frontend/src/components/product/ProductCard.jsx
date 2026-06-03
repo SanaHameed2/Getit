@@ -9,8 +9,10 @@ const BADGE_COLORS = {
   Handmade: 'bg-purple-100 text-purple-800',
 }
 
-function StarRating({ rating, count }) {
-  const safeRating = rating || 0
+function StarRating({ rating = 0, count = 0 }) {
+  const safeRating = Number(rating) || 0
+  const safeCount = Number(count) || 0
+
   return (
     <div className="flex items-center gap-1.5">
       <div className="flex items-center gap-0.5">
@@ -18,12 +20,17 @@ function StarRating({ rating, count }) {
           <Star
             key={star}
             size={12}
-            className={star <= Math.round(safeRating) ? 'text-amber-400 fill-amber-400' : 'text-gray-200 fill-gray-200'}
+            className={
+              star <= Math.round(safeRating)
+                ? 'text-amber-400 fill-amber-400'
+                : 'text-gray-200 fill-gray-200'
+            }
           />
         ))}
       </div>
+
       <span className="text-xs text-gray-500">
-        {safeRating.toFixed(1)} ({count?.toLocaleString() || 0})
+        {safeRating.toFixed(1)} ({safeCount.toLocaleString()})
       </span>
     </div>
   )
@@ -33,21 +40,28 @@ function ProductCard({ product }) {
   const [cartCount, setCartCount] = useState(0)
 
   const addToCart = () => {
-    setCartCount(cartCount + 1)
-    console.log('Added to cart:', product.name)
+    setCartCount((prev) => prev + 1)
+    console.log('Added to cart:', product?.name)
   }
 
-  // Support both image and image_url fields
-  const imageUrl = product.image_url || product.image || 'https://picsum.photos/300/300'
+  // Safe image handling (Supabase + fallback support)
+  const imageUrl =
+    product?.image_url ||
+    product?.image ||
+    'https://picsum.photos/300/300'
+
+  const rating = Number(product?.rating) || 0
+  const reviewCount = Number(product?.reviewCount) || 0
 
   return (
     <div className="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
-      {/* Image */}
-      <Link to={`/product/${product.id}`} className="block relative overflow-hidden">
+
+      {/* IMAGE */}
+      <Link to={`/product/${product?.id}`} className="block relative overflow-hidden">
         <div className="aspect-square overflow-hidden bg-gray-50">
           <img
             src={imageUrl}
-            alt={product.name}
+            alt={product?.name || 'Product'}
             loading="lazy"
             decoding="async"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -56,24 +70,37 @@ function ProductCard({ product }) {
             }}
           />
         </div>
-        {product.badge && (
-          <span className={`absolute top-3 left-3 text-xs font-semibold px-2.5 py-1 rounded-full ${BADGE_COLORS[product.badge] || 'bg-gray-100 text-gray-800'}`}>
+
+        {product?.badge && (
+          <span
+            className={`absolute top-3 left-3 text-xs font-semibold px-2.5 py-1 rounded-full ${
+              BADGE_COLORS[product.badge] || 'bg-gray-100 text-gray-800'
+            }`}
+          >
             {product.badge}
           </span>
         )}
       </Link>
 
-      {/* Content */}
+      {/* CONTENT */}
       <div className="p-4">
-        <p className="text-xs text-indigo-600 font-medium mb-1">{product.category}</p>
-        <Link to={`/product/${product.id}`}>
+        <p className="text-xs text-indigo-600 font-medium mb-1">
+          {product?.category || 'Uncategorized'}
+        </p>
+
+        <Link to={`/product/${product?.id}`}>
           <h3 className="font-semibold text-gray-900 leading-snug hover:text-indigo-600 transition-colors line-clamp-2 mb-2">
-            {product.name}
+            {product?.name}
           </h3>
         </Link>
-        <StarRating rating={product.rating} count={product.reviewCount} />
+
+        <StarRating rating={rating} count={reviewCount} />
+
         <div className="flex items-center justify-between mt-3">
-          <span className="text-lg font-bold text-gray-900">${product.price}</span>
+          <span className="text-lg font-bold text-gray-900">
+            ${product?.price || 0}
+          </span>
+
           <button
             onClick={addToCart}
             className="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700 transition-colors"
