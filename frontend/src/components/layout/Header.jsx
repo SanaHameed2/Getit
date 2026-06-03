@@ -1,15 +1,11 @@
 import { Link } from 'react-router-dom'
 import { ShoppingCart, Menu, X, Zap, Sun, Moon } from 'lucide-react'
 import { useState } from 'react'
+import { useTheme } from '../../app/providers/ThemeProvider'
 
 function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [isDark, setIsDark] = useState(false)
-
-  const toggleDarkMode = () => {
-    setIsDark(!isDark)
-    document.documentElement.classList.toggle('dark')
-  }
+  const { isDark, toggleTheme } = useTheme()  // ← Changed: using global theme
 
   // Temporary cart count (replace with real context later)
   const totalItems = 0
@@ -23,7 +19,8 @@ function Header() {
             <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center group-hover:bg-indigo-700 transition-colors">
               <Zap size={16} className="text-white" />
             </div>
-<span className="font-bold text-lg text-gray-900 dark:text-white">GetIt</span>          </Link>
+            <span className="font-bold text-lg text-gray-900 dark:text-white">GetIt</span>
+          </Link>
 
           {/* Nav links */}
           <nav className="hidden md:flex items-center gap-6 ml-6 text-sm font-medium text-gray-600 dark:text-gray-300">
@@ -35,9 +32,9 @@ function Header() {
           {/* Spacer */}
           <div className="flex-1" />
 
-          {/* Dark Mode Toggle */}
+          {/* Dark Mode Toggle - Using global theme */}
           <button
-            onClick={toggleDarkMode}
+            onClick={toggleTheme}
             className="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
             aria-label="Toggle dark mode"
           >
@@ -87,4 +84,4 @@ function Header() {
   )
 }
 
-export default Header 
+export default Header

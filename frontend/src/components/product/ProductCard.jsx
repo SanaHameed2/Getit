@@ -10,6 +10,7 @@ const BADGE_COLORS = {
 }
 
 function StarRating({ rating, count }) {
+  const safeRating = rating || 0
   return (
     <div className="flex items-center gap-1.5">
       <div className="flex items-center gap-0.5">
@@ -17,12 +18,12 @@ function StarRating({ rating, count }) {
           <Star
             key={star}
             size={12}
-            className={star <= Math.round(rating) ? 'text-amber-400 fill-amber-400' : 'text-gray-200 fill-gray-200'}
+            className={star <= Math.round(safeRating) ? 'text-amber-400 fill-amber-400' : 'text-gray-200 fill-gray-200'}
           />
         ))}
       </div>
       <span className="text-xs text-gray-500">
-        {rating.toFixed(1)} ({count.toLocaleString()})
+        {safeRating.toFixed(1)} ({count?.toLocaleString() || 0})
       </span>
     </div>
   )
@@ -36,28 +37,24 @@ function ProductCard({ product }) {
     console.log('Added to cart:', product.name)
   }
 
+  // Support both image and image_url fields
+  const imageUrl = product.image_url || product.image || 'https://picsum.photos/300/300'
+
   return (
     <div className="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
       {/* Image */}
       <Link to={`/product/${product.id}`} className="block relative overflow-hidden">
         <div className="aspect-square overflow-hidden bg-gray-50">
-          <picture>
-            <source 
-              srcSet={`${product.image}&fm=webp`}
-              type="image/webp"
-            />
-            <source 
-              srcSet={`${product.image}`}
-              type="image/jpeg"
-            />
-            <img
-              src={product.image}
-              alt={product.name}
-              loading="lazy"
-              decoding="async"
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-            />
-          </picture>
+          <img
+            src={imageUrl}
+            alt={product.name}
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            onError={(e) => {
+              e.target.src = 'https://picsum.photos/300/300'
+            }}
+          />
         </div>
         {product.badge && (
           <span className={`absolute top-3 left-3 text-xs font-semibold px-2.5 py-1 rounded-full ${BADGE_COLORS[product.badge] || 'bg-gray-100 text-gray-800'}`}>
@@ -74,7 +71,7 @@ function ProductCard({ product }) {
             {product.name}
           </h3>
         </Link>
-        <StarRating rating={product.rating} count={product.reviewCount || 0} />
+        <StarRating rating={product.rating} count={product.reviewCount} />
         <div className="flex items-center justify-between mt-3">
           <span className="text-lg font-bold text-gray-900">${product.price}</span>
           <button

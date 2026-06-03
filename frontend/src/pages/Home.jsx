@@ -1,6 +1,6 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Search, SlidersHorizontal, TrendingUp, Shield, Truck, RefreshCw } from 'lucide-react'
-import products, { categories } from '../data/products'
+import { supabase } from '../lib/supabase'
 import ProductCard from '../components/product/ProductCard'
 
 const SORT_OPTIONS = [
@@ -11,10 +11,29 @@ const SORT_OPTIONS = [
 ]
 
 function HomePage() {
+  const [products, setProducts] = useState([])
+  const [loading, setLoading] = useState(true)
   const [selectedCategory, setSelectedCategory] = useState('All')
   const [sortBy, setSortBy] = useState('featured')
   const [searchQuery, setSearchQuery] = useState('')
 
+  // Fetch products from Supabase
+  useEffect(() => {
+    async function fetchProducts() {
+      const { data } = await supabase.from('products').select('*')
+      setProducts(data || [])
+      setLoading(false)
+    }
+    fetchProducts()
+  }, [])
+
+  // Categories from products
+  const categories = useMemo(() => {
+    if (!products.length) return ['All']
+    return ['All', ...new Set(products.map(p => p.category))]
+  }, [products])
+
+  // Filter and sort products
   const filtered = useMemo(() => {
     let list = [...products]
 
@@ -27,7 +46,7 @@ function HomePage() {
       list = list.filter(
         (p) =>
           p.name.toLowerCase().includes(q) ||
-          (p.shortDescription && p.shortDescription.toLowerCase().includes(q)) ||
+          (p.description && p.description.toLowerCase().includes(q)) ||
           p.category.toLowerCase().includes(q),
       )
     }
@@ -40,14 +59,18 @@ function HomePage() {
         list.sort((a, b) => b.price - a.price)
         break
       case 'rating':
-        list.sort((a, b) => b.rating - a.rating)
+        list.sort((a, b) => (b.rating || 0) - (a.rating || 0))
         break
     }
 
     return list
-  }, [selectedCategory, sortBy, searchQuery])
+  }, [products, selectedCategory, sortBy, searchQuery])
 
   const featuredProduct = products[0]
+
+  if (loading) {
+    return <div className="text-center py-20">Loading products...</div>
+  }
 
   return (
     <>
@@ -76,29 +99,23 @@ function HomePage() {
           <div className="flex-1 flex justify-center">
             <div className="relative">
               <div className="w-72 h-72 md:w-80 md:h-80 rounded-3xl overflow-hidden shadow-2xl">
-                <picture>
-                  <source 
-                    srcSet={`${featuredProduct.image}&fm=webp`}
-                    type="image/webp"
-                  />
-                  <source 
-                    srcSet={`${featuredProduct.image}`}
-                    type="image/jpeg"
-                  />
+                {featuredProduct && (
                   <img
-                    src={featuredProduct.image}
+                    src={featuredProduct.image_url}
                     alt={featuredProduct.name}
                     fetchpriority="high"
                     decoding="async"
                     className="w-full h-full object-cover"
                   />
-                </picture>
+                )}
               </div>
-              <div className="absolute -bottom-4 -right-4 bg-white text-gray-900 rounded-2xl p-4 shadow-xl">
-                <p className="text-xs text-gray-500">Today's Pick</p>
-                <p className="font-bold text-sm">{featuredProduct.name}</p>
-                <p className="text-indigo-600 font-bold">${featuredProduct.price}</p>
-              </div>
+              {featuredProduct && (
+                <div className="absolute -bottom-4 -right-4 bg-white text-gray-900 rounded-2xl p-4 shadow-xl">
+                  <p className="text-xs text-gray-500">Today's Pick</p>
+                  <p className="font-bold text-sm">{featuredProduct.name}</p>
+                  <p className="text-indigo-600 font-bold">${featuredProduct.price}</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -186,7 +203,7 @@ function HomePage() {
         {filtered.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filtered.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.id} product={{ ...product, image: product.image_url }} />
             ))}
           </div>
         ) : (
