@@ -1,3 +1,4 @@
+import React from 'react'  
 import { useState, useMemo, useEffect } from 'react'
 import { Search, SlidersHorizontal, TrendingUp, Shield, Truck, RefreshCw } from 'lucide-react'
 import { supabase } from '../lib/supabase'

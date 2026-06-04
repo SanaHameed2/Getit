@@ -1,3 +1,4 @@
+import React from 'react'  
 import { Link } from 'react-router-dom'
 import { Star, ShoppingCart } from 'lucide-react'
 import { useState } from 'react'
