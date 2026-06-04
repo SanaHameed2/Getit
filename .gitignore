@@ -8,3 +8,4 @@ dist/
 .vite/
 .vercel
 .env*
+"backup_current/" 
