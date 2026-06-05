@@ -1,4 +1,4 @@
-import React from 'react'  
+import React from 'react'
 import { useState, useMemo, useEffect } from 'react'
 import { Search, SlidersHorizontal, TrendingUp, Shield, Truck, RefreshCw } from 'lucide-react'
 import { supabase } from '../lib/supabase'
@@ -18,7 +18,6 @@ function HomePage() {
   const [sortBy, setSortBy] = useState('featured')
   const [searchQuery, setSearchQuery] = useState('')
 
-  // Fetch products from Supabase
   useEffect(() => {
     async function fetchProducts() {
       const { data } = await supabase.from('products').select('*')
@@ -28,13 +27,11 @@ function HomePage() {
     fetchProducts()
   }, [])
 
-  // Categories from products
   const categories = useMemo(() => {
     if (!products.length) return ['All']
     return ['All', ...new Set(products.map(p => p.category))]
   }, [products])
 
-  // Filter and sort products
   const filtered = useMemo(() => {
     let list = [...products]
 
@@ -70,13 +67,13 @@ function HomePage() {
   const featuredProduct = products[0]
 
   if (loading) {
-    return <div className="text-center py-20">Loading products...</div>
+    return <div className="text-center py-20 dark:text-white">Loading products...</div>
   }
 
   return (
     <>
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-indigo-900 via-indigo-800 to-purple-900 text-white">
+      {/* Hero Section - Dark mode added */}
+      <section className="bg-gradient-to-br from-indigo-900 via-indigo-800 to-purple-900 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 flex flex-col md:flex-row items-center gap-12">
           <div className="flex-1 text-center md:text-left">
             <span className="inline-block bg-indigo-500/30 text-indigo-200 text-xs font-semibold px-3 py-1 rounded-full mb-4">
@@ -92,7 +89,7 @@ function HomePage() {
             </p>
             <a
               href="#products"
-              className="inline-block bg-white text-indigo-900 font-semibold px-8 py-3 rounded-xl hover:bg-indigo-50 transition-colors shadow-lg"
+              className="inline-block bg-white text-indigo-900 font-semibold px-8 py-3 rounded-xl hover:bg-indigo-50 transition-colors shadow-lg dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
             >
               Browse Products
             </a>
@@ -111,10 +108,10 @@ function HomePage() {
                 )}
               </div>
               {featuredProduct && (
-                <div className="absolute -bottom-4 -right-4 bg-white text-gray-900 rounded-2xl p-4 shadow-xl">
-                  <p className="text-xs text-gray-500">Today's Pick</p>
+                <div className="absolute -bottom-4 -right-4 bg-white text-gray-900 rounded-2xl p-4 shadow-xl dark:bg-gray-800 dark:text-white">
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Today's Pick</p>
                   <p className="font-bold text-sm">{featuredProduct.name}</p>
-                  <p className="text-indigo-600 font-bold">${featuredProduct.price}</p>
+                  <p className="text-indigo-600 font-bold dark:text-indigo-400">${featuredProduct.price}</p>
                 </div>
               )}
             </div>
@@ -122,8 +119,8 @@ function HomePage() {
         </div>
       </section>
 
-      {/* Trust Badges */}
-      <section className="bg-white border-b">
+      {/* Trust Badges - Dark mode added */}
+      <section className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
@@ -133,12 +130,12 @@ function HomePage() {
               { icon: TrendingUp, title: 'Low Prices', desc: 'Unbeatable value guaranteed' },
             ].map(({ icon: Icon, title, desc }) => (
               <div key={title} className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center">
-                  <Icon size={18} className="text-indigo-600" />
+                <div className="w-10 h-10 bg-indigo-50 dark:bg-indigo-900 rounded-xl flex items-center justify-center">
+                  <Icon size={18} className="text-indigo-600 dark:text-indigo-400" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-900">{title}</p>
-                  <p className="text-xs text-gray-500">{desc}</p>
+                  <p className="text-sm font-semibold text-gray-900 dark:text-white">{title}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">{desc}</p>
                 </div>
               </div>
             ))}
@@ -146,26 +143,26 @@ function HomePage() {
         </div>
       </section>
 
-      {/* Products Section */}
+      {/* Products Section - Background added */}
       <section id="products" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Search and Sort */}
+        {/* Search and Sort - Dark mode added */}
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
           <div className="relative flex-1">
-            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
             <input
               type="text"
               placeholder="Search products..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400"
+              className="w-full pl-9 pr-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white focus:outline-none focus:border-indigo-400"
             />
           </div>
-          <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3">
-            <SlidersHorizontal size={14} className="text-gray-400" />
+          <div className="flex items-center gap-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-3">
+            <SlidersHorizontal size={14} className="text-gray-400 dark:text-gray-500" />
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="py-2.5 pr-2 text-sm focus:outline-none bg-transparent cursor-pointer"
+              className="py-2.5 pr-2 text-sm focus:outline-none bg-transparent cursor-pointer text-gray-900 dark:text-white"
             >
               {SORT_OPTIONS.map((o) => (
                 <option key={o.value} value={o.value}>
@@ -176,7 +173,7 @@ function HomePage() {
           </div>
         </div>
 
-        {/* Categories */}
+        {/* Categories - Dark mode added */}
         <div className="flex gap-2 flex-wrap mb-6">
           {categories.map((cat) => (
             <button
@@ -185,7 +182,7 @@ function HomePage() {
               className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
                 selectedCategory === cat
                   ? 'bg-indigo-600 text-white shadow-md'
-                  : 'bg-white text-gray-600 border border-gray-200 hover:border-indigo-300 hover:text-indigo-600'
+                  : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:border-indigo-300 hover:text-indigo-600'
               }`}
             >
               {cat}
@@ -194,7 +191,7 @@ function HomePage() {
         </div>
 
         {/* Results count */}
-        <p className="text-sm text-gray-500 mb-6">
+        <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
           Showing {filtered.length} product{filtered.length !== 1 ? 's' : ''}
           {selectedCategory !== 'All' && ` in ${selectedCategory}`}
           {searchQuery && ` for "${searchQuery}"`}
@@ -208,9 +205,9 @@ function HomePage() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-20 text-gray-400">
+          <div className="text-center py-20 text-gray-400 dark:text-gray-500">
             <Search size={40} className="mx-auto mb-4 opacity-40" />
-            <p className="font-medium text-gray-600">No products found</p>
+            <p className="font-medium text-gray-600 dark:text-gray-400">No products found</p>
             <button
               onClick={() => {
                 setSearchQuery('')
@@ -224,8 +221,8 @@ function HomePage() {
         )}
       </section>
 
-      {/* Newsletter */}
-      <section className="bg-indigo-600 text-white">
+      {/* Newsletter - Dark mode added */}
+      <section className="bg-indigo-600 dark:bg-indigo-900 text-white">
         <div className="max-w-2xl mx-auto px-4 py-16 text-center">
           <h2 className="text-2xl md:text-3xl font-bold mb-3">Stay in the Know</h2>
           <p className="text-indigo-100 mb-8">
@@ -239,7 +236,7 @@ function HomePage() {
             />
             <button
               type="submit"
-              className="px-6 py-3 bg-white text-indigo-700 font-semibold rounded-xl hover:bg-indigo-50 transition-colors"
+              className="px-6 py-3 bg-white text-indigo-700 font-semibold rounded-xl hover:bg-indigo-50 transition-colors dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
             >
               Subscribe
             </button>

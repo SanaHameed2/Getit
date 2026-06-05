@@ -7,11 +7,13 @@ import { ThemeProvider } from './app/providers/ThemeProvider'
 
 function App() {
   return (
-    <ThemeProvider>       
-      <BrowserRouter>      
-        <Header />
-        <Home />
-        <Footer />
+    <ThemeProvider>
+      <BrowserRouter>
+        <div className="min-h-screen bg-white dark:bg-gray-900">
+          <Header />
+          <Home />
+          <Footer />
+        </div>
       </BrowserRouter>
     </ThemeProvider>
   )

@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom styles */
+body {
+  background-color: white;
+}
+
+.dark body {
+  background-color: rgb(17, 24, 39);
+}
