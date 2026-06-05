@@ -1,4 +1,5 @@
 import React from 'react';
+import { useCart } from '../../contexts/CartContext'
 import { Link } from 'react-router-dom'
 import { ShoppingCart, Menu, X, Zap, Sun, Moon } from 'lucide-react'
 import { useState } from 'react'
@@ -7,11 +8,8 @@ import { useTheme } from '../../app/providers/ThemeProvider'
 function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { isDark, toggleTheme } = useTheme()
-
-  // Debug log
-  console.log('Dark mode:', isDark)
-
-  const totalItems = 0
+  const { openCart, getCartCount } = useCart()
+  const totalItems = getCartCount()
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700 shadow-sm">
@@ -33,18 +31,15 @@ function Header() {
           <div className="flex-1" />
 
           <button
-            onClick={() => {
-              console.log('Toggle clicked')
-              toggleTheme()
-            }}
+            onClick={toggleTheme}
             className="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
             aria-label="Toggle dark mode"
           >
             {isDark ? <Sun size={20} /> : <Moon size={20} />}
           </button>
 
-          <Link
-            to="/cart"
+          <button
+            onClick={openCart}
             className="relative p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
             aria-label="Open cart"
           >
@@ -54,7 +49,7 @@ function Header() {
                 {totalItems > 9 ? '9+' : totalItems}
               </span>
             )}
-          </Link>
+          </button>
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
