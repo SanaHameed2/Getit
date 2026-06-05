@@ -1,27 +1,86 @@
-# GetIt — Ecommerce Storefront
+\# GetItMart - Ecommerce Platform
 
-An ecommerce storefront built with **React + Vite + Tailwind CSS**.
 
-## Features
-- Product catalog with 12+ products across 5 categories
-- Search & filter by category
-- Sort by price, rating
-- Shopping cart (coming soon)
-- Responsive design
-- Dark mode toggle
-- Newsletter signup
 
-## Tech Stack
-- **Frontend**: React 18, React Router DOM
-- **Styling**: Tailwind CSS
-- **Build**: Vite
-- **Icons**: Lucide React
-- **Deployment**: Vercel / Netlify
+🛒 Modern ecommerce platform built with React, Vite, Tailwind CSS, and Supabase.
 
-## Getting Started
+
+
+\## Live Demo
+
+🔗 \[https://getit-vercel.app](https://getit-vercel.app)
+
+
+
+\## Features
+
+\- 🛍️ 40+ products from Supabase database
+
+\- 🔍 Search products by name
+
+\- 📂 Filter by category
+
+\- 📊 Sort by price (low/high) and rating
+
+\- 🛒 Shopping cart with drawer (add/remove/update quantity)
+
+\- 🌙 Full page dark mode with persistence
+
+\- 📱 Fully responsive design
+
+\- 💾 Cart persists in localStorage
+
+
+
+\## Tech Stack
+
+| Technology | Purpose |
+
+|------------|---------|
+
+| React 18 | Frontend framework |
+
+| Vite | Build tool |
+
+| Tailwind CSS | Styling |
+
+| Supabase | Database \& Backend |
+
+| Context API | State management |
+
+| Vercel | Hosting |
+
+
+
+\## Local Setup
+
+
+
 ```bash
+
+\# Clone repository
+
+git clone https://github.com/SanaHameed2/Getit.git
+
+cd Getit/frontend
+
+
+
+\# Install dependencies
+
 npm install
+
+
+
+\# Create .env file
+
+echo "VITE\_SUPABASE\_URL=your\_url" > .env
+
+echo "VITE\_SUPABASE\_ANON\_KEY=your\_key" >> .env
+
+
+
+\# Run development server
+
 npm run dev
 
-Author
-Sana Hameed - Front-End Developer
