@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useCart } from '../contexts/CartContext'
 import { supabase } from '../lib/supabase'
 import { Star, ShoppingCart, Minus, Plus, ArrowLeft, Check } from 'lucide-react'
+import ProductReviews from '../components/reviews/ProductReviews'
+
 
 function ProductDetails() {
   const { id } = useParams()
@@ -169,6 +171,9 @@ function ProductDetails() {
           </button>
         </div>
       </div>
+
+      {/* Reviews Section */}
+      <ProductReviews productId={product.id} />
     </div>
   )
 }

@@ -102,7 +102,7 @@ function ProductCard({ product }) {
             {product?.name}
           </h3>
         </Link>
-        <StarRating rating={rating} count={reviewCount} />
+        <StarRating rating={rating} count={product.review_count || 0} />
         <div className="flex items-center justify-between mt-3">
           <span className="text-lg font-bold text-gray-900 dark:text-white">
             ${product?.price || 0}
