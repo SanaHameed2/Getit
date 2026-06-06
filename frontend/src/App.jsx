@@ -12,6 +12,7 @@ import Profile from './pages/Profile'
 import { ThemeProvider } from './app/providers/ThemeProvider'
 import { AuthProvider } from './contexts/AuthContext'
 import { CartProvider } from './contexts/CartContext'
+import AdminDashboard from './pages/admin/AdminDashboard'
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
                 <Route path="/orders" element={<OrderHistory />} />
                 <Route path="/product/:id" element={<ProductDetails />} />
                 <Route path="/profile" element={<Profile />} />
+<Route path="/admin" element={<AdminDashboard />} />
               </Routes>
               <Footer />
               <CartDrawer />
