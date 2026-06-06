@@ -40,11 +40,18 @@ export function CartProvider({ children }) {
   // Save cart whenever it changes
   useEffect(() => {
     if (!loading) {
-      if (user) {
-        syncCartToDB(cart)
-      } else {
-        localStorage.setItem('cart', JSON.stringify(cart))
+      const saveCart = async () => {
+        try {
+          if (user) {
+            await syncCartToDB(cart)
+          } else {
+            localStorage.setItem('cart', JSON.stringify(cart))
+          }
+        } catch (error) {
+          console.error('Failed to save cart:', error)
+        }
       }
+      saveCart()
     }
   }, [cart, user, loading])
 

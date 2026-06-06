@@ -5,8 +5,13 @@ export async function syncCartToDB(cartItems) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return null
 
-  // First, delete existing cart items
-  await supabase.from('cart_items').delete().eq('user_id', user.id)
+  // First, delete existing cart items for this user
+  const { error: deleteError } = await supabase
+    .from('cart_items')
+    .delete()
+    .eq('user_id', user.id)
+  
+  if (deleteError) throw deleteError
 
   if (cartItems.length === 0) return []
 
