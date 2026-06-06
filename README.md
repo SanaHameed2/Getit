@@ -6,86 +6,47 @@
 [![Tailwind](https://img.shields.io/badge/Styling-Tailwind-38B2AC?logo=tailwind-css)](https://tailwindcss.com)
 [![Vitest](https://img.shields.io/badge/Testing-Vitest-6E9F18?logo=vitest)](https://vitest.dev)
 
-**Live Demo:** [https://getit-vercel.app](https://getit-vercel.app)
+**Live Demo:** [getit-vercel.app](https://getit-vercel.app)
 
-Production-grade ecommerce platform with 40+ products, cart system, dark mode, authentication, wishlist, reviews, admin panel, and Supabase backend.
-
----
-
-## Features
-
-### 🛍️ User Features
-- 40+ products from Supabase database
-- Search products by name
-- Filter by category
-- Sort by price (low/high) and rating
-- Product details page with quantity selector
-- Add to cart with drawer
-- Update quantity, remove items
-- Cart persists in localStorage
-- Full-page dark mode with localStorage persistence
-- Fully responsive (mobile, tablet, desktop)
-
-### 🔐 Authentication
-- Sign up with email and password
-- Email confirmation
-- Login / Logout
-- Profile page with name update
-- Cart sync across devices after login
-
-### ❤️ Wishlist
-- Add products to wishlist
-- Remove from wishlist
-- Wishlist page with add to cart option
-- Guest wishlist (localStorage) and user wishlist (database)
-
-### ⭐ Reviews & Ratings
-- Write product reviews with star ratings (1-5)
-- Edit and delete own reviews
-- View all customer reviews
-- Average rating displayed on product cards
-- Review count shown on home page
-
-### 👑 Admin Panel
-- Dashboard with stats (products, orders, revenue)
-- Product management (view, add, edit, delete)
-- Search and filter products by category
-- Order management with status update
-- Order details view
-- Top selling products report
-
-### 📦 Order Management
-- Checkout page with shipping form
-- Order placement with database save
-- Order success confirmation page
-- Order history page for users
-- Order status tracking
-
-### 🧪 Testing
-- Unit tests with Vitest
-- 8+ tests for cart, filter, and helper utilities
-- Test coverage report
+GetItMart is a fully functional online shopping website. It features a modern design, a fast product catalog, an interactive shopping cart, secure user accounts, and an admin dashboard to manage orders and inventory. 
 
 ---
 
-## Tech Stack
+## 🌟 Key Features
 
-```yaml
-Frontend:
-  Framework: React 18
-  Build Tool: Vite
-  Styling: Tailwind CSS
-  State Management: Context API
-  Routing: React Router DOM
-  Icons: Lucide React
-  Testing: Vitest + React Testing Library
+### For Shoppers
+* **Easy Browsing:** Search and filter through 40+ products by name, category, price, or rating.
+* **Smart Shopping Cart:** Add items to your cart and update quantities easily. Your cart saves automatically so you don’t lose items if you refresh.
+* **Wishlist:** Save your favorite items to buy later (works for both guests and logged-in users).
+* **Reviews & Ratings:** Leave a 1-5 star rating and comment on products. You can also edit or delete your own reviews.
+* **Dark Mode:** Switch between light and dark themes anytime.
 
-Backend:
-  Database: Supabase (PostgreSQL)
-  Auth: Supabase Auth
-  Storage: Supabase Storage
+### For Admins
+* **Business Dashboard:** See total products, orders, and revenue at a glance.
+* **Product Management:** Add new items, update prices, change descriptions, or delete products.
+* **Order Tracking:** Update order statuses as they move from Pending to Processing, Shipped, and Delivered.
 
-Deployment:
-  Hosting: Vercel
-  CDN: Vercel Edge Network
-  SSL: Automatic
+---
+
+## 🛠️ Tools Used (Tech Stack)
+
+* **Frontend (UI):** React 18, Vite, Tailwind CSS (for styling)
+* **Backend (Database & Auth):** Supabase (PostgreSQL)
+* **Testing:** Vitest (ensures the cart and filters work perfectly)
+* **Hosting:** Vercel
+
+---
+
+## 📁 Project Structure
+
+```text
+Getit/
+├── frontend/
+│   ├── src/
+│   │   ├── components/       # Small UI parts (Buttons, Headers, Footers)
+│   │   ├── contexts/         # App logic (Cart memory, Themes, Log-in states)
+│   │   ├── pages/            # Complete pages (Home, Checkout, Admin Panel)
+│   │   └── utils/            # Helper tools and code tests
+│   ├── .env.example          # Guide for setup keys
+│   └── package.json          # List of project dependencies
+└── README.md
