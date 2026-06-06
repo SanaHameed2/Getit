@@ -1,8 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Star, ShoppingCart } from 'lucide-react'
+import { Star, ShoppingCart, Heart } from 'lucide-react'
 import { useState } from 'react'
 import { useCart } from '../../contexts/CartContext'
+import { useWishlist } from '../../contexts/WishlistContext'
 
 const BADGE_COLORS = {
   'Best Seller': 'bg-amber-100 text-amber-800',
@@ -30,7 +31,6 @@ function StarRating({ rating = 0, count = 0 }) {
           />
         ))}
       </div>
-
       <span className="text-xs text-gray-500">
         {safeRating.toFixed(1)} ({safeCount.toLocaleString()})
       </span>
@@ -40,9 +40,19 @@ function StarRating({ rating = 0, count = 0 }) {
 
 function ProductCard({ product }) {
   const { addToCart } = useCart()
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist()
+  const liked = isInWishlist(product.id)
 
   const handleAddToCart = () => {
     addToCart(product, 1)
+  }
+
+  const handleWishlistToggle = () => {
+    if (liked) {
+      removeFromWishlist(product.id)
+    } else {
+      addToWishlist(product)
+    }
   }
 
   const imageUrl = product?.image_url || product?.image || 'https://picsum.photos/300/300'
@@ -50,7 +60,15 @@ function ProductCard({ product }) {
   const reviewCount = Number(product?.reviewCount) || 0
 
   return (
-    <div className="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
+    <div className="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-200 relative">
+      {/* Wishlist Button */}
+      <button
+        onClick={handleWishlistToggle}
+        className="absolute top-2 right-2 z-10 p-2 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm hover:bg-red-50 transition-colors"
+      >
+        <Heart size={18} className={liked ? 'fill-red-500 text-red-500' : 'text-gray-500'} />
+      </button>
+
       <Link to={`/product/${product?.id}`} className="block relative overflow-hidden">
         <div className="aspect-square overflow-hidden bg-gray-50 dark:bg-gray-700">
           <img
