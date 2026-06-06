@@ -1,37 +1,65 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
+import { syncCartToDB, loadCartFromDB, mergeGuestCartWithUserCart } from '../lib/cart'
+import { useAuth } from './AuthContext'
 
 const CartContext = createContext()
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([])
   const [isCartOpen, setIsCartOpen] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const { user } = useAuth()
 
-  // Load cart from localStorage on mount
+  // Load cart based on auth state
   useEffect(() => {
-    const savedCart = localStorage.getItem('cart')
-    if (savedCart) {
-      setCart(JSON.parse(savedCart))
+    async function loadCart() {
+      setLoading(true)
+      if (user) {
+        const dbCart = await loadCartFromDB()
+        if (dbCart && dbCart.length > 0) {
+          setCart(dbCart)
+        } else {
+          const guestCart = JSON.parse(localStorage.getItem('cart') || '[]')
+          if (guestCart.length > 0) {
+            const mergedCart = await mergeGuestCartWithUserCart(guestCart)
+            if (mergedCart) setCart(mergedCart)
+            localStorage.removeItem('cart')
+          } else {
+            setCart([])
+          }
+        }
+      } else {
+        const savedCart = localStorage.getItem('cart')
+        setCart(savedCart ? JSON.parse(savedCart) : [])
+      }
+      setLoading(false)
     }
-  }, [])
+    loadCart()
+  }, [user])
 
-  // Save cart to localStorage whenever it changes
+  // Save cart whenever it changes
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart))
-  }, [cart])
+    if (!loading) {
+      if (user) {
+        syncCartToDB(cart)
+      } else {
+        localStorage.setItem('cart', JSON.stringify(cart))
+      }
+    }
+  }, [cart, user, loading])
 
   const addToCart = (product, quantity = 1) => {
     setCart(prevCart => {
       const existingItem = prevCart.find(item => item.id === product.id)
-      
+      let newCart
       if (existingItem) {
-        return prevCart.map(item =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
+        newCart = prevCart.map(item =>
+          item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
         )
+      } else {
+        newCart = [...prevCart, { ...product, quantity }]
       }
-      
-      return [...prevCart, { ...product, quantity }]
+      return newCart
     })
   }
 
@@ -44,7 +72,6 @@ export function CartProvider({ children }) {
       removeFromCart(productId)
       return
     }
-    
     setCart(prevCart =>
       prevCart.map(item =>
         item.id === productId ? { ...item, quantity } : item
@@ -70,6 +97,7 @@ export function CartProvider({ children }) {
   return (
     <CartContext.Provider value={{
       cart,
+      loading,
       isCartOpen,
       openCart,
       closeCart,
