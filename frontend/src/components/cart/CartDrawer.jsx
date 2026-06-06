@@ -1,5 +1,6 @@
 import React from 'react'
 import { X, Minus, Plus, Trash2, ShoppingBag } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { useCart } from '../../contexts/CartContext'
 
 function CartDrawer() {
@@ -104,11 +105,13 @@ function CartDrawer() {
               <span>Total:</span>
               <span>${getCartTotal().toFixed(2)}</span>
             </div>
-            <button
-              className="w-full py-3 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition-colors"
+            <Link
+              to="/checkout"
+              onClick={closeCart}
+              className="w-full py-3 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition-colors text-center block"
             >
               Proceed to Checkout
-            </button>
+            </Link>
           </div>
         )}
       </div>

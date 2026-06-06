@@ -1,9 +1,11 @@
 import React from 'react'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import CartDrawer from './components/cart/CartDrawer'
+import Checkout from './pages/Checkout'
+import OrderSuccess from './pages/OrderSuccess'
 import { ThemeProvider } from './app/providers/ThemeProvider'
 import { AuthProvider } from './contexts/AuthContext'
 import { CartProvider } from './contexts/CartContext'
@@ -16,7 +18,11 @@ function App() {
           <BrowserRouter>
             <div className="min-h-screen bg-white dark:bg-gray-900">
               <Header />
-              <Home />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/order-success" element={<OrderSuccess />} />
+              </Routes>
               <Footer />
               <CartDrawer />
             </div>
@@ -27,4 +33,4 @@ function App() {
   )
 }
 
-export default App
+export default App   // ✅ Yeh line honi chahiye
