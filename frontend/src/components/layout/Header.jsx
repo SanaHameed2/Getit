@@ -37,6 +37,8 @@ function Header() {
             {/* Nav links */}
             <nav className="hidden md:flex items-center gap-6 ml-6 text-sm font-medium text-gray-600 dark:text-gray-300">
               <Link to="/" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Home</Link>
+              <Link to="/profile" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Profile</Link>
+              <Link to="/orders" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Orders</Link>
               <a href="#products" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Products</a>
               <a href="#categories" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Categories</a>
             </nav>
@@ -110,6 +112,12 @@ function Header() {
             <div className="md:hidden border-t border-gray-200 dark:border-gray-700 py-3 space-y-1">
               <Link to="/" className="block px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 rounded-lg" onClick={() => setMobileMenuOpen(false)}>
                 Home
+              </Link>
+              <Link to="/profile" className="block px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 rounded-lg" onClick={() => setMobileMenuOpen(false)}>
+                Profile
+              </Link>
+              <Link to="/orders" className="block px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 rounded-lg" onClick={() => setMobileMenuOpen(false)}>
+                Orders
               </Link>
               <a href="#products" className="block px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 rounded-lg" onClick={() => setMobileMenuOpen(false)}>
                 Products
