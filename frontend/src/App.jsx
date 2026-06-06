@@ -1,5 +1,6 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import ProductsPage from './pages/ProductsPage'
 import Home from './pages/Home'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
@@ -34,6 +35,7 @@ function App() {
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/wishlist" element={<Wishlist />} />
                   <Route path="/admin" element={<AdminDashboard />} />
+<Route path="/products" element={<ProductsPage />} />
                 </Routes>
                 <Footer />
                 <CartDrawer />
