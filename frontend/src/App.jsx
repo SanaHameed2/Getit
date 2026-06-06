@@ -6,6 +6,7 @@ import Footer from './components/layout/Footer'
 import CartDrawer from './components/cart/CartDrawer'
 import Checkout from './pages/Checkout'
 import OrderSuccess from './pages/OrderSuccess'
+import OrderHistory from './pages/OrderHistory'
 import { ThemeProvider } from './app/providers/ThemeProvider'
 import { AuthProvider } from './contexts/AuthContext'
 import { CartProvider } from './contexts/CartContext'
@@ -22,6 +23,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/order-success" element={<OrderSuccess />} />
+                <Route path="/orders" element={<OrderHistory />} />
               </Routes>
               <Footer />
               <CartDrawer />
@@ -33,4 +35,4 @@ function App() {
   )
 }
 
-export default App   // ✅ Yeh line honi chahiye
+export default App
