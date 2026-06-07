@@ -3,6 +3,7 @@ import { useCart } from '../contexts/CartContext'
 import { useAuth } from '../contexts/AuthContext'
 import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
+import StripeCheckout from '../components/payment/StripeCheckout'
 
 function Checkout() {
   const { cart, getCartTotal, clearCart } = useCart()
@@ -162,6 +163,7 @@ function Checkout() {
               />
             </div>
 
+            {/* Place Order Button - Remove this if using Stripe only */}
             <button 
               type="submit" 
               disabled={loading} 
@@ -169,6 +171,9 @@ function Checkout() {
             >
               {loading ? 'Processing...' : `Place Order • $${getCartTotal().toFixed(2)}`}
             </button>
+
+            {/* Add StripeCheckout here */}
+            <StripeCheckout />
           </form>
         </div>
       </div>
